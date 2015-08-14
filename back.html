@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+        <script type="text/javascript" src="themoviedb.js"></script>
+        <script type="text/javascript" src="idtools.js"></script>
+</head>
+
+
+<body>
+
+<script>
+
+var actors = ["brad pitt", "angelina jolie", "robert downey jr."];
+var keywords = ["action","romance","comedy"];
+
+var actorsID = [];
+var keywordsID = [];
+
+for(i = 0; i < actors.length; i++){
+        theMovieDb.search.getPerson({"query":escape(actors[i])},getActorID, errorCB);
+}
+
+for(i = 0; i < keywords.length; i++){
+        theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
+}
+
+
+
+</script>
+
+</body>
+</html>
