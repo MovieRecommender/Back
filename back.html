@@ -1,29 +1,85 @@
 <!DOCTYPE html>
 <head>
         <script type="text/javascript" src="themoviedb.js"></script>
-        <script type="text/javascript" src="idtools.js"></script>
 </head>
 
 
 <body>
 
+<h6 id="list"></h6>
+
 <script>
 
-var actors = ["brad pitt", "angelina jolie", "robert downey jr."];
-var keywords = ["action","romance","comedy"];
+var actors = ["robert downey jr."];
+var keywords = ["marvel"];
+
+var movies = [];
 
 var actorsID = [];
 var keywordsID = [];
 
-for(i = 0; i < actors.length; i++){
-        theMovieDb.search.getPerson({"query":escape(actors[i])},getActorID, errorCB);
+main();
+
+function main(){
+        for(i = 0; i < actors.length; i++){
+                theMovieDb.search.getPerson({"query":escape(actors[i])},getActorID, errorCB);
+        }
+
+        // gets ID # of all keywords
+        for(i = 0; i < keywords.length; i++){
+                theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
+        }
+
+        //searches for movies with actors & kewords tags
+        console.log(actorsID);
+        console.log(keywordsID);
+        theMovieDb.discover.getMovies({"with_cast":actorsID.toString(),"with_keywords":keywordsID.toString()}, discoverMovies, errorCB);
+        // theMovieDb.discover.getMovies({"with_cast":287,"with_keywords":211721}, discoverMovies, errorCB);
+        // theMovieDb.discover.getMovies({"with_cast":287}, discoverMovies, errorCB);
 }
 
-for(i = 0; i < keywords.length; i++){
-        theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
+function discoverMovies(data){
+        var arrayData = JSON.parse(data);
+        // console.log(arrayData);
+        console.log(arrayData["results"]);
+        for(i = 0; i < arrayData["results"].length; i++){
+                movies.push(arrayData["results"][i]["title"]);
+        }
+        console.log(movies);
+        document.getElementById("list").innerHTML = movies;
 }
 
+function getActorID(data){
+        var arrayData = JSON.parse(data);
+        console.log("Actor ID:" + arrayData["results"]["0"]["id"]);
+        actorsID.push(arrayData["results"]["0"]["id"]);
+}
 
+function getKeywordID(data){
+        var arrayData = JSON.parse(data);
+        console.log("Keyword ID:" + arrayData["results"]["0"]["id"]);
+        keywordsID.push(arrayData["results"]["0"]["id"]);
+}
+
+function successCB(data) {
+        console.log("Successful callback: " + data);
+        console.log(typeof data)
+        var jsdata = JSON.parse(data);
+        console.log(typeof jsdata);
+}
+
+function errorCB(data) {
+            console.log("Error callback: " + data);
+}
+
+function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                        break;
+                }
+        }
+}
 
 </script>
 

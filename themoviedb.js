@@ -65,14 +65,14 @@ theMovieDb.common = {
             error('{"status_code":408,"status_message":"Request timed out"}');
         };
 
-        xhr.open(method, theMovieDb.common.base_uri + options.url, true);
+        xhr.open(method, theMovieDb.common.base_uri + options.url, false);
 
         if(options.method === "POST") {
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader("Accept", "application/json");
         }
 
-        xhr.timeout = theMovieDb.common.timeout;
+        // xhr.timeout = theMovieDb.common.timeout;
 
         xhr.onload = function (e) {
             if (xhr.readyState === 4) {
