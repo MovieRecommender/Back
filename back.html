@@ -7,7 +7,7 @@
 
 <body>
 
-<h4 id="list"></h4>
+<h4 id="list"> </h4>
 
 <script>
 
@@ -19,7 +19,10 @@ var movies = [];
 var actorsID = [];
 var keywordsID = [];
 
-main();
+function addKeyword(){
+        keywords.push(document.getElementById("keyword").value);
+        main();
+}
 
 function main(){
         for(i = 0; i < actors.length; i++){
