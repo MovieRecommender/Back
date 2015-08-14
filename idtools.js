@@ -1,7 +1,7 @@
-function getActorID(data){
+function getPeopleID(data){
         var arrayData = JSON.parse(data);
         console.log("Actor ID:" + arrayData["results"]["0"]["id"]);
-        actorsID.push(arrayData["results"]["0"]["id"]);
+        peopleID.push(arrayData["results"]["0"]["id"]);
 }
 
 function getKeywordID(data){

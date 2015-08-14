@@ -1,32 +1,46 @@
 <!DOCTYPE html>
-<head>
-        <script type="text/javascript" src="themoviedb.js"></script>
-        <script type="text/javascript" src="idtools.js"></script>
-</head>
+<html>
 
+<head>
+<link rel="stylesheet" type="text/css" href="main.css">
+<script type="text/javascript" src="themoviedb.js"></script>
+<script type="text/javascript" src="idtools.js"></script>
+</head>
 
 <body>
 
 <h4 id="list"> </h4>
 
+
+<div>
+<h1 align="left" > KEYWORDS </h1>
+<form action="query.php" method="GET">
+    <input type="text" placeholder="keyword" name="keyword" id="keyword"><br />
+    <input type="text" placeholder="people" name="people" id="people"><br />
+    <input type="button" value="Click me" onclick="search()"><br />
+
+</form>
+
+
 <script>
 
-var people = ["robert downey jr."];
-var keywords = ["marvel"];
+var people = [];
+var keywords = [];
 
 var movies = [];
 
 var peopleID = [];
 var keywordsID = [];
 
-function addKeyword(){
+function search(){
         keywords.push(document.getElementById("keyword").value);
+        people.push(document.getElementById("people").value)
         main();
 }
 
 function main(){
         for(i = 0; i < people.length; i++){
-                theMovieDb.search.getPerson({"query":escape(people[i])},getActorID, errorCB);
+                theMovieDb.search.getPerson({"query":escape(people[i])},getPeopleID, errorCB);
         }
 
         // gets ID # of all keywords
@@ -54,6 +68,6 @@ function discoverMovies(data){
 }
 
 </script>
-
 </body>
+    </div>
 </html>
