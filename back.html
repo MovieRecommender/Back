@@ -18,13 +18,23 @@ var movies = [];
 
 var peopleID = [];
 var keywordsID = [];
+var genresID = [];
 
-function addKeyword(){
-        keywords.push(document.getElementById("keyword").value);
+function addTag(){
+        var entry = document.getElementById("tag").value;
+
+        if(isGenre(entry) != null){
+                genresID.push(isGenre(entry));
+        }
+        else{
+                keywords.push(entry);
+        }
+
         main();
 }
 
 function main(){
+        // gets ID # of all people
         for(i = 0; i < people.length; i++){
                 theMovieDb.search.getPerson({"query":escape(people[i])},getActorID, errorCB);
         }

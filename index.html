@@ -13,9 +13,9 @@
 
 
 <div>
-<h1 align="left" > KEYWORDS </h1>
+<h1 align="left" > TAGS </h1>
 <form action="query.php" method="GET">
-    <input type="text" placeholder="keyword" name="keyword" id="keyword"><br />
+    <input type="text" placeholder="tag" name="tag" id="tag"><br />
     <input type="text" placeholder="people" name="people" id="people"><br />
     <input type="button" value="Click me" onclick="search()"><br />
 
@@ -31,27 +31,58 @@ var movies = [];
 
 var peopleID = [];
 var keywordsID = [];
+var genresID = [];
 
 function search(){
-        keywords.push(document.getElementById("keyword").value);
-        people.push(document.getElementById("people").value)
+
+        empty(people);
+        empty(peopleID);
+        empty(keywords);
+        empty(keywordsID);
+        empty(genresID);
+        empty(movies);
+
+        var tag = document.getElementById("tag").value;
+        var person = document.getElementById("people").value;
+
+        if(person != ""){
+                people.push(document.getElementById("people").value);
+        }
+
+        if(isGenre(tag) != null){
+                genresID.push(isGenre(tag));
+        }
+        else if (tag != ""){
+                keywords.push(tag);
+        }
+
         main();
 }
 
 function main(){
+
+        console.log(people);
+        console.log(keywords);
+
         for(i = 0; i < people.length; i++){
                 theMovieDb.search.getPerson({"query":escape(people[i])},getPeopleID, errorCB);
         }
 
         // gets ID # of all keywords
         for(i = 0; i < keywords.length; i++){
+                // console.log("run");
                 theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
         }
 
         //searches for movies with people & kewords tags
         console.log(peopleID);
         console.log(keywordsID);
-        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),"with_keywords":keywordsID.toString()}, discoverMovies, errorCB);
+        console.log(genresID);
+
+        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                "with_keywords":keywordsID.toString(),
+                                                                                "with_genres":genresID.toString(),
+                                                                                }, discoverMovies, errorCB);
         // theMovieDb.discover.getMovies({"with_cast":287,"with_keywords":211721}, discoverMovies, errorCB);
         // theMovieDb.discover.getMovies({"with_cast":287}, discoverMovies, errorCB);
 }
