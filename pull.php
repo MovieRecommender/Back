@@ -1,5 +1,5 @@
 <?php
 
-echo `git pull origin master`;
+echo `git stash && git pull origin master`;
 
 ?>
