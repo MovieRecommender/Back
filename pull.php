@@ -2,6 +2,6 @@
 
 echo "hello world";
 
-echo shell_exec("git pull origin master");
+echo shell_exec('git pull origin master');
 
 ?>
