@@ -94,3 +94,27 @@ function getIDs(type){
 
         }
 }
+
+function next(){
+        if(page != 0){
+                if(page < maxPage){
+                        page = page + 1;
+                        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                                "with_keywords":keywordsID.toString(),
+                                                                                                "with_genres":genresID.toString(),
+                                                                                                "page":page
+                                                                                                }, discoverMovies, errorCB);
+                }
+        }
+}
+
+function previous(){
+        if(page > 1){
+                page = page - 1;
+                theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                        "with_keywords":keywordsID.toString(),
+                                                                                        "with_genres":genresID.toString(),
+                                                                                        "page":page
+                                                                                        }, discoverMovies, errorCB);
+        }
+}
