@@ -100,7 +100,7 @@ function getIDs(type){
 function next(){
         if(page != 0){
                 if(page < maxPage){
-                        page = page + 1;
+                        page++;
                         searchMovies();
                 }
         }
@@ -108,7 +108,7 @@ function next(){
 
 function previous(){
         if(page > 1){
-                page = page - 1;
+                page--;
                 searchMovies();
         }
 }
