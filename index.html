@@ -21,26 +21,25 @@
 
 </form>
 
+<input type="button" value="-->" onclick="next()"><br />
+<input type="button" value="<--" onclick="previous()"><br />
 
 <script>
 
 var people = [];
 var keywords = [];
-
 var movies = [];
-
 var peopleID = [];
 var keywordsID = [];
 var genresID = [];
 
+var page = 0;
+var maxPage = 0;
+
 function search(){
 
-        empty(people);
-        empty(peopleID);
-        empty(keywords);
-        empty(keywordsID);
-        empty(genresID);
-        empty(movies);
+        empty({people,peopleID,keywords,keywordsID,genresID,movies});
+        page = 1;
 
         var tag = document.getElementById("tag").value;
         var person = document.getElementById("people").value;
@@ -61,20 +60,11 @@ function search(){
 
 function main(){
 
-        console.log(people);
-        console.log(keywords);
+        // gets IDs
+        getIDs("people");
+        getIDs("keyword");
 
-        for(i = 0; i < people.length; i++){
-                theMovieDb.search.getPerson({"query":escape(people[i])},getPeopleID, errorCB);
-        }
-
-        // gets ID # of all keywords
-        for(i = 0; i < keywords.length; i++){
-                // console.log("run");
-                theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
-        }
-
-        //searches for movies with people & kewords tags
+        // searches for movies with people & kewords tags
         console.log(peopleID);
         console.log(keywordsID);
         console.log(genresID);
@@ -82,20 +72,47 @@ function main(){
         theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
                                                                                 "with_keywords":keywordsID.toString(),
                                                                                 "with_genres":genresID.toString(),
+                                                                                "page":page
                                                                                 }, discoverMovies, errorCB);
         // theMovieDb.discover.getMovies({"with_cast":287,"with_keywords":211721}, discoverMovies, errorCB);
         // theMovieDb.discover.getMovies({"with_cast":287}, discoverMovies, errorCB);
 }
 
 function discoverMovies(data){
+        movies = [];
         var arrayData = JSON.parse(data);
         // console.log(arrayData);
         console.log(arrayData["results"]);
-        for(i = 0; i < arrayData["results"].length; i++){
-                movies.push(arrayData["results"][i]["title"]);
+        for(m in arrayData["results"]){
+                movies.push(arrayData["results"][m]["title"]);
         }
         console.log(movies);
         document.getElementById("list").innerHTML = movies;
+        maxPage = arrayData["total_pages"];
+}
+
+function next(){
+        if(page != 0){
+                if(page < maxPage){
+                        page = page + 1;
+                        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                                "with_keywords":keywordsID.toString(),
+                                                                                                "with_genres":genresID.toString(),
+                                                                                                "page":page
+                                                                                                }, discoverMovies, errorCB);
+                }
+        }
+}
+
+function previous(){
+        if(page > 1){
+                page = page - 1;
+                theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                        "with_keywords":keywordsID.toString(),
+                                                                                        "with_genres":genresID.toString(),
+                                                                                        "page":page
+                                                                                        }, discoverMovies, errorCB);
+        }
 }
 
 </script>

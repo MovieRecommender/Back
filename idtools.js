@@ -69,6 +69,28 @@ function isGenre(tag){
         return genres[tag];
 }
 
-function empty(array){
-        array = array.splice(0,array.length);
+function empty(arrayOfArrays){
+        for(a in arrayOfArrays){
+                arrayOfArrays[a] = arrayOfArrays[a].splice(0,arrayOfArrays[a].length);
+        }
+}
+
+function getIDs(type){
+        if(type == "people"){
+                if(people != []){
+                        for(p in people){
+                                theMovieDb.search.getPerson({"query":escape(people[p])},getPeopleID, errorCB);
+                        }
+                }
+        }
+        else if(type == "keyword"){
+                if(keywords != []){
+                        for(k in keywords){
+                                theMovieDb.search.getKeyword({"query":escape(keywords[k])},getKeywordID, errorCB);
+                        }
+                }
+        }
+        else if(type == "list"){
+
+        }
 }

@@ -12,13 +12,15 @@
 <script>
 
 var people = ["robert downey jr."];
-var keywords = ["marvel"];
+var keywords = [];
 
 var movies = [];
 
 var peopleID = [];
 var keywordsID = [];
 var genresID = [];
+
+main();
 
 function addTag(){
         var entry = document.getElementById("tag").value;
@@ -34,15 +36,10 @@ function addTag(){
 }
 
 function main(){
-        // gets ID # of all people
-        for(i = 0; i < people.length; i++){
-                theMovieDb.search.getPerson({"query":escape(people[i])},getActorID, errorCB);
-        }
 
-        // gets ID # of all keywords
-        for(i = 0; i < keywords.length; i++){
-                theMovieDb.search.getKeyword({"query":escape(keywords[i])},getKeywordID, errorCB);
-        }
+        // gets IDs
+        getIDs("people");
+        getIDs("keyword");
 
         //searches for movies with people & kewords tags
         console.log(peopleID);
@@ -54,7 +51,7 @@ function main(){
 
 function discoverMovies(data){
         var arrayData = JSON.parse(data);
-        // console.log(arrayData);
+        console.log(arrayData);
         console.log(arrayData["results"]);
         for(i = 0; i < arrayData["results"].length; i++){
                 movies.push(arrayData["results"][i]["title"]);
