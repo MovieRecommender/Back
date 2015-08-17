@@ -18,11 +18,10 @@
     <input type="text" placeholder="tag" name="tag" id="tag"><br />
     <input type="text" placeholder="people" name="people" id="people"><br />
     <input type="button" value="Click me" onclick="search()"><br />
-
 </form>
 
-<input type="button" value="-->" onclick="next()">
-<input type="button" value="<--" onclick="previous()"><br />
+<input type="button" value="<--" onclick="previous()">
+<input type="button" value="-->" onclick="next()"><br />
 
 <script>
 
@@ -32,13 +31,14 @@ var movies = [];
 var peopleID = [];
 var keywordsID = [];
 var genresID = [];
+var shown = [];
 
 var page = 0;
 var maxPage = 0;
 
 function search(){
 
-        empty({people,peopleID,keywords,keywordsID,genresID,movies});
+        empty({people,peopleID,keywords,keywordsID,genresID,movies,shown});
         page = 1;
 
         var tag = document.getElementById("tag").value;
@@ -69,26 +69,29 @@ function main(){
         console.log(keywordsID);
         console.log(genresID);
 
-        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
-                                                                                "with_keywords":keywordsID.toString(),
-                                                                                "with_genres":genresID.toString(),
-                                                                                "page":page
-                                                                                }, discoverMovies, errorCB);
-        // theMovieDb.discover.getMovies({"with_cast":287,"with_keywords":211721}, discoverMovies, errorCB);
-        // theMovieDb.discover.getMovies({"with_cast":287}, discoverMovies, errorCB);
+        console.log(keywordsID.toString().replace(/,/g, "|"));
+
+        searchMovies();
 }
 
 function discoverMovies(data){
         movies = [];
         var arrayData = JSON.parse(data);
-        // console.log(arrayData);
-        console.log(arrayData["results"]);
-        for(m in arrayData["results"]){
-                movies.push(arrayData["results"][m]["title"]);
-        }
-        console.log(movies);
-        document.getElementById("list").innerHTML = movies;
+        var film;
         maxPage = arrayData["total_pages"];
+
+        console.log(arrayData);
+
+        for(m in arrayData["results"]){
+                film = arrayData["results"][m]
+                if(shown.indexOf(film["id"]) == -1){
+                        movies.push(film["title"]);
+                        // shown.push(film["id"]);
+                }
+        }
+
+        document.getElementById("list").innerHTML = movies.toString().replace(/,/g,"<br />");
+
 }
 
 </script>

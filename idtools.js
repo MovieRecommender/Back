@@ -8,7 +8,9 @@ function getPeopleID(data){
 function getKeywordID(data){
         var arrayData = JSON.parse(data);
         console.log("Keyword ID:" + arrayData["results"]["0"]["id"]);
-        keywordsID.push(arrayData["results"]["0"]["id"]);
+        for(k in arrayData["results"]){
+                keywordsID.push(arrayData["results"][k]["id"]);
+        }
 }
 
 function successCB(data) {
@@ -99,11 +101,7 @@ function next(){
         if(page != 0){
                 if(page < maxPage){
                         page = page + 1;
-                        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
-                                                                                                "with_keywords":keywordsID.toString(),
-                                                                                                "with_genres":genresID.toString(),
-                                                                                                "page":page
-                                                                                                }, discoverMovies, errorCB);
+                        searchMovies();
                 }
         }
 }
@@ -111,10 +109,14 @@ function next(){
 function previous(){
         if(page > 1){
                 page = page - 1;
-                theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
-                                                                                        "with_keywords":keywordsID.toString(),
-                                                                                        "with_genres":genresID.toString(),
-                                                                                        "page":page
-                                                                                        }, discoverMovies, errorCB);
+                searchMovies();
         }
+}
+
+function searchMovies(){
+        theMovieDb.discover.getMovies({"with_cast":peopleID.toString(),
+                                                                                "with_keywords":keywordsID.toString().replace(/,/g, "|"),
+                                                                                "with_genres":genresID.toString(),
+                                                                                "page":page
+                                                                                }, discoverMovies, errorCB);
 }
