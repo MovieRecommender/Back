@@ -78,7 +78,6 @@ function discoverMovies(data){
         movies = [];
         var arrayData = JSON.parse(data);
         var film;
-        var display = "";
         maxPage = arrayData["total_pages"];
 
         console.log(arrayData);
@@ -91,12 +90,7 @@ function discoverMovies(data){
                 }
         }
 
-        for(m =  0; m < movies.length; m = m + 2){
-                display = display.concat("<div style= \"text-align:right\">" + movies[m + 1] +
-                                                                   "<span style=\"float:left\">" + movies[m] + "</style></div><br />");
-        }
-
-        document.getElementById("list").innerHTML = display;
+        document.getElementById("list").innerHTML = movies;
 
 }
 
