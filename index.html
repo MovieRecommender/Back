@@ -1,30 +1,23 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+<script type="text/javascript" src="themoviedb.js"></script>
+<script type="text/javascript" src="idtools.js"></script>
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <script type="text/javascript" src="themoviedb.js"></script>
 <script type="text/javascript" src="idtools.js"></script>
 </head>
 
-<body>
-
-<div id="list"> </div>
-
-
-<div>
-<h1 align="left" >SEARCH MOVIE</h1>
-<form action="query.php" method="GET">
-    <input type="text" placeholder="tag" name="tag" id="tag"><br />
-    <input type="text" placeholder="people" name="people" id="people"><br />
-    <input type="button" value="search" onclick="search()"><br />
-</form>
-
-<input type="button" value="<--" onclick="previous()">
-<input type="button" value="-->" onclick="next()"><br />
+<body align= "center">
+    <img src="antlerstransparent.png" alt="antlers" class="displayed" style="width:200px;height:200px;" >
+    <h2> ANTLR </h2>
+    <input class = "displayed" type="text" placeholder="keyword" name="tag" id="tag">
+    <input class = "displayed" type="text" placeholder="people" name="people" id="people">
+    <input class="myButton" type="button" value="Previous" onclick="previous()">
+    <input class="myButton" type="button" value="Search" onclick="search()">
+    <input class="myButton" type="button" value="Next" onclick="next()">
+    <h4 id="list"></h4>
 
 <script>
-
 var people = [];
 var keywords = [];
 var movies = [];
@@ -78,6 +71,7 @@ function discoverMovies(data){
         movies = [];
         var arrayData = JSON.parse(data);
         var film;
+        var display = "";
         maxPage = arrayData["total_pages"];
 
         console.log(arrayData);
@@ -90,11 +84,16 @@ function discoverMovies(data){
                 }
         }
 
-        document.getElementById("list").innerHTML = movies;
+        for(m =  0; m < movies.length; m = m + 2){
+                display = display.concat("<div style= \"text-align:right\">" + movies[m + 1] +
+                                                                   "<span style=\"float:left\">" + movies[m] + "</style></div><br />");
+        }
+
+        document.getElementById("list").innerHTML = display;
 
 }
 
 </script>
 </body>
-    </div>
+
 </html>
